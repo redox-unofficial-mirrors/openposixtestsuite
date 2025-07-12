@@ -24,7 +24,6 @@ int dummy17 = SIGTTIN;
 int dummy18 = SIGTTOU;
 int dummy19 = SIGUSR1;
 int dummy20 = SIGUSR2;
-int dummy21 = SIGPOLL;
 int dummy22 = SIGPROF;
 int dummy23 = SIGSYS;
 int dummy24 = SIGTRAP;

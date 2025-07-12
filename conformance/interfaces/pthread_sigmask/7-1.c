@@ -30,7 +30,7 @@ void *a_thread_func()
 	                 SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT,
 	                 SIGPIPE, SIGQUIT, SIGSEGV,
 	                 SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU,
-	                 SIGUSR1, SIGUSR2, SIGPOLL, SIGPROF, SIGSYS,
+	                 SIGUSR1, SIGUSR2, SIGPROF, SIGSYS,
 	                 SIGTRAP, SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ };
 
 	for ( i = 0; i < NUMSIGNALS; i++ )

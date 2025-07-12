@@ -21,9 +21,9 @@
 * handling function.
 
 * The steps are:
-* -> register a handler for SIGPOLL without SA_SIGINFO, and a known function
-*   as saèhandler
-* -> raise SIGPOLL, and check the function has been called.
+* -> register a handler for SIGALRM without SA_SIGINFO, and a known function
+*   as sa_handler
+* -> raise SIGALRM, and check the function has been called.
 
 * The test fails if the function is not called
 */
@@ -76,7 +76,7 @@
 #define VERBOSE 1
 #endif
 
-#define SIGNAL SIGPOLL
+#define SIGNAL SIGALRM
 
 /******************************************************************************/
 /***************************    Test case   ***********************************/
@@ -108,7 +108,7 @@ int main()
 		UNRESOLVED( ret, "Failed to empty signal set" );
 	}
 
-	/* Install the signal handler for SIGPOLL */
+	/* Install the signal handler for SIGALRM */
 	ret = sigaction( SIGNAL, &sa, 0 );
 
 	if ( ret != 0 )
@@ -125,7 +125,7 @@ int main()
 
 	if ( ret != 0 )
 	{
-		UNRESOLVED( ret, "Failed to raise SIGPOLL" );
+		UNRESOLVED( ret, "Failed to raise SIGALRM" );
 	}
 
 	if ( !called )

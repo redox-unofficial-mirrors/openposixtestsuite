@@ -27,7 +27,6 @@ int main() {
 		(0 == SIGTTOU) ||
 		(0 == SIGUSR1) ||
 		(0 == SIGUSR2) ||
-		(0 == SIGPOLL) ||
 		(0 == SIGPROF) ||
 		(0 == SIGSYS) ||
 		(0 == SIGTRAP) ||

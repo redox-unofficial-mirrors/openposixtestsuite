@@ -22,8 +22,8 @@
 
 * The steps are:
 * -> create a child thread 
-* -> child registers a handler for SIGPOLL with SA_RESTART, then waits for the semaphore
-* -> parent kills the child with SIGPOLL, then post the semaphore.
+* -> child registers a handler for SIGALRM with SA_RESTART, then waits for the semaphore
+* -> parent kills the child with SIGALRM, then post the semaphore.
 
 * The test fails if the sem_wait function returns EINTR
 
@@ -86,7 +86,9 @@ Anyway, a false negative status cannot be returned.
 #define VERBOSE 1
 #endif
 
-#define SIGNAL SIGPOLL
+// #define SIGNAL SIGALRM
+/* Replace deprecated signal definition */
+#define SIGNAL SIGALRM
 
 /******************************************************************************/
 /***************************    Test case   ***********************************/

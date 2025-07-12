@@ -22,9 +22,9 @@
 
 * The steps are:
 * -> test for RTS extension
-* -> register a handler for SIGPOLL with SA_SIGINFO, and a known function
+* -> register a handler for SIGALRM with SA_SIGINFO, and a known function
 *   as sa_sigaction
-* -> raise SIGPOLL, and check the function has been called.
+* -> raise SIGALRM, and check the function has been called.
 
 * The test fails if the function is not called
 */
@@ -77,7 +77,7 @@
 #define VERBOSE 1
 #endif
 
-#define SIGNAL SIGPOLL
+#define SIGNAL SIGALRM
 
 /******************************************************************************/
 /***************************    Test case   ***********************************/
@@ -106,7 +106,7 @@ int main()
 	output_init();
 
 	/* Test the RTS extension */
-	rts = sysconf( _SC_REALTIME_SIGNALS );
+	rts = sysconf( _POSIX_REALTIME_SIGNALS );
 
 	if ( rts < 0L )
 	{
@@ -125,7 +125,7 @@ int main()
 		UNRESOLVED( ret, "Failed to empty signal set" );
 	}
 
-	/* Install the signal handler for SIGPOLL */
+	/* Install the signal handler for SIGALRM */
 	ret = sigaction( SIGNAL, &sa, 0 );
 
 	if ( ret != 0 )
@@ -142,7 +142,7 @@ int main()
 
 	if ( ret != 0 )
 	{
-		UNRESOLVED( ret, "Failed to raise SIGPOLL" );
+		UNRESOLVED( ret, "Failed to raise SIGALRM" );
 	}
 
 	if ( !called )

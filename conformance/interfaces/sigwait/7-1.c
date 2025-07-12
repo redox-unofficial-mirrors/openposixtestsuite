@@ -95,7 +95,7 @@ int main( int argc, char * argv[] )
 	output_init();
 
 	/* Test the RTS extension */
-	rts = sysconf( _SC_REALTIME_SIGNALS );
+	rts = sysconf( _POSIX_REALTIME_SIGNALS );
 
 	if ( rts < 0L )
 	{
