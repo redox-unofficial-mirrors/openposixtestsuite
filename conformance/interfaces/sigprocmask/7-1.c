@@ -19,8 +19,6 @@
 #include <stdio.h>
 #include "posixtest.h"
 
-#define NUMSIGNALS 26
-
 int main()
 {
 	sigset_t oactl, tempset;
@@ -33,7 +31,9 @@ int main()
 		SIGUSR1, SIGUSR2, SIGPROF, SIGSYS, 
 		SIGTRAP, SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ };
 
-	for (i=0; i<NUMSIGNALS; i++) {
+	int num_signals = sizeof(siglist)/sizeof(siglist[0]);
+
+	for (i=0; i<num_signals; i++) {
 		sigemptyset(&oactl);
 		sigemptyset(&tempset);
 		sigaddset(&tempset, siglist[i]);

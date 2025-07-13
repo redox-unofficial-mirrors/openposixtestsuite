@@ -84,6 +84,7 @@ int main()
 			*/
 			tv.tv_sec = 1;
 			tv.tv_usec = 0;
+			printf("Calling select to sleep 1 second\n");
 			select(0, NULL, NULL, NULL, &tv);
 
 			printf("--> Sending SIGCONT\n");

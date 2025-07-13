@@ -2,7 +2,7 @@
  * Copyright (c) 2003, Intel Corporation. All rights reserved.
  * Created by:  salwan.searty REMOVE-THIS AT intel DOT com
  * This file is licensed under the GPL license.  For the full content
- * of this license, see the COPYING file at the top level of this 
+ * of this license, see the COPYING file at the top level of this
  * source tree.
 
  This program tests the assertion that the signal will be added to the
@@ -24,23 +24,31 @@ void myhandler(int signo)
 	printf("SIGCHLD called. Inside handler\n");
 	sigset_t mask;
 	sigprocmask(SIG_SETMASK, NULL, &mask);
-	if(sigismember(&mask, SIGCHLD)) {
+	if (sigismember(&mask, SIGCHLD))
+	{
 		signal_blocked = 1;
 	}
 }
 
 int main()
 {
-	if (sigset(SIGCHLD, myhandler) == SIG_ERR) {
-                perror("Unexpected error while using sigset()");
-               	return PTS_UNRESOLVED;
-        }
+	struct sigaction act;
+	act.sa_handler = myhandler;
+	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+
+	if (sigaction(SIGCHLD, &act, 0) != 0)
+	{
+		perror("Unexpected error while using sigaction()");
+		return PTS_UNRESOLVED;
+	}
 
 	raise(SIGCHLD);
-	
-	if (signal_blocked != 1) {
+
+	if (signal_blocked != 1)
+	{
 		printf("Test FAILED: handler was called even though default was expected\n");
 		return PTS_FAIL;
-	}		
+	}
 	return PTS_PASS;
-} 
+}

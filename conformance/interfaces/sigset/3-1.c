@@ -2,16 +2,16 @@
  * Copyright (c) 2003, Intel Corporation. All rights reserved.
  * Created by:  salwan.searty REMOVE-THIS AT intel DOT com
  * This file is licensed under the GPL license.  For the full content
- * of this license, see the COPYING file at the top level of this 
+ * of this license, see the COPYING file at the top level of this
  * source tree.
 
  This program tests the assertion that the function shall be executed
  when the signal occurs if the disp parameter is the address of a function.
 
- How this program tests this assertion is by setting up a handler 
- "myhandler" for SIGCHLD, and then raising that signal. If the 
+ How this program tests this assertion is by setting up a handler
+ "myhandler" for SIGCHLD, and then raising that signal. If the
  handler_called variable is anything but 1, then fail, otherwise pass.
-     
+
 */
 
 #define _XOPEN_SOURCE 600
@@ -31,16 +31,23 @@ void myhandler(int signo)
 
 int main()
 {
-	if (sigset(SIGCHLD, myhandler) == SIG_ERR) {
-                perror("Unexpected error while using sigset()");
-               	return PTS_UNRESOLVED;
-        }
+	struct sigaction act;
+	act.sa_handler = myhandler;
+	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+
+	if (sigaction(SIGCHLD, &act, 0) != 0)
+	{
+		perror("Unexpected error while using sigaction()");
+		return PTS_UNRESOLVED;
+	}
 
 	raise(SIGCHLD);
-	
-	if (handler_called != 1) {
+
+	if (handler_called != 1)
+	{
 		printf("Test FAILED: handler was called even though default was expected\n");
 		return PTS_FAIL;
-	}		
+	}
 	return PTS_PASS;
-} 
+}

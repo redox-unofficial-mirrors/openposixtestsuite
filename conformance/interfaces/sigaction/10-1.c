@@ -27,6 +27,8 @@ void handler(int signo, siginfo_t *info, void *context)
 		printf("Child has been stopped\n");
 		waiting = 0;
 		child_stopped++;
+	} else {
+		printf("Unexpected si_code\n");
 	}
 }
 
@@ -70,6 +72,7 @@ int main()
 			while (waiting) {
 				tv.tv_sec = 1;
 				tv.tv_usec = 0;
+				printf("Waiting with select\n");
 				if (!select(0, NULL, NULL, NULL, &tv))
 				  break;
 			}
