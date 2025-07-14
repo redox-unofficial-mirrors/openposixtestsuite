@@ -1,7 +1,8 @@
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <sys/time.h>
+#include <time.h>
+#include <string.h>
 #include "posixtest.h"
 
 /*
@@ -27,7 +28,7 @@ int main()
 	sigset_t newmask, pendingset;
 	int sig;
 
-	struct timeval tv_ref, tv_cur;
+	struct timespec ts_ref, ts_cur;
 
 	/* Empty set of blocked signals */
 
@@ -53,16 +54,17 @@ int main()
 	}
 
 	/* Read clock */
-	if ( gettimeofday( &tv_ref, NULL ) != 0 )
+	memset(&ts_ref, 0, sizeof(ts_ref));
+	if ( clock_gettime(CLOCK_REALTIME, &ts_ref) != 0 )
 	{
 		printf( "Failed to get time of day" );
 		return PTS_UNRESOLVED;
 	}
 
-	/* SIGALRM will be sent in 5 seconds */
+	/* SIGALRM will be sent in 3 seconds */
 	alarm( 3 );
 
-	/* Call sigwait.  It should wait for 5 seconds and then move
+	/* Call sigwait.  It should wait for 3 seconds and then move
 	 * along the rest of the process when it received the SIGALRM */
 	if ( sigwait( &newmask, &sig ) != 0 )
 	{
@@ -71,14 +73,15 @@ int main()
 	}
 
 	/* Re-read clock */
-	if ( gettimeofday( &tv_cur, NULL ) != 0 )
+	memset(&ts_cur, 0, sizeof(ts_cur));
+	if ( clock_gettime(CLOCK_REALTIME, &ts_cur) != 0 )
 	{
 		printf( "Failed to get time of day" );
 		return PTS_UNRESOLVED;
 	}
 
 	/* Check the operation was blocking until the signal was generated */
-	if ( tv_cur.tv_sec - tv_ref.tv_sec < 2 )
+	if ( ts_cur.tv_sec - ts_ref.tv_sec < 2 )
 	{
 		printf( "The operation lasted less than 3 seconds!\n" );
 		return PTS_FAIL;

@@ -184,7 +184,9 @@ void * test( void * arg )
 	sigset_t set;
 	int i, j=0;
 	int signals[] = { SIGBUS, SIGKILL, SIGABRT, SIGCHLD, SIGHUP };
+#ifndef NSIG
 #define NSIG (sizeof(signals)/sizeof(int))
+#endif
 	int operation[] = {SIG_SETMASK, SIG_BLOCK, SIG_UNBLOCK};
 
 	ret = sigemptyset( &set );
