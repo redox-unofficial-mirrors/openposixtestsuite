@@ -62,24 +62,24 @@ int main()
 		return PTS_UNRESOLVED;
 	}
 
-	/* Block SIGALRM */
+	/* Block SIGRTMIN */
 	if ( sigprocmask( SIG_SETMASK, &newmask, NULL ) == -1 )
 	{
 		printf( "Error in sigprocmask()\n" );
 		return PTS_UNRESOLVED;
 	}
 
-	/* Send SIGALRM signal 2 times to this process.  Since it is blocked,
+	/* Send SIGRTMIN signal 2 times to this process.  Since it is blocked,
 	 * it should be pending and queued. */
 	if ( raise( SIGRTMIN ) != 0 )
 	{
-		printf( "Could not raise SIGALRM\n" );
+		printf( "Could not raise SIGRTMIN\n" );
 		return PTS_UNRESOLVED;
 	}
 
 	if ( raise( SIGRTMIN ) != 0 )
 	{
-		printf( "Could not raise SIGALRM\n" );
+		printf( "Could not raise SIGRTMIN\n" );
 		return PTS_UNRESOLVED;
 	}
 

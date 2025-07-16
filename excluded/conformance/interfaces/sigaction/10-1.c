@@ -83,6 +83,7 @@ int main()
 		}
 		
 		/* POSIX specifies default action to be abnormal termination */
+		printf("--> Sending SIGHUP to end test\n");
 		kill(pid, SIGHUP);
 		waitpid(pid, &s, 0);
 	}
