@@ -2,7 +2,7 @@
  * Copyright (c) 2003, Intel Corporation. All rights reserved.
  * Created by:  salwan.searty REMOVE-THIS AT intel DOT com
  * This file is licensed under the GPL license.  For the full content
- * of this license, see the COPYING file at the top level of this
+ * of this license, see the COPYING file at the top level of this 
  * source tree.
 
  This program tests the assertion that the process's signal mask will be
@@ -11,8 +11,8 @@
  Steps:
  1. Empty the signal mask
  2. Deliver the signal
- 3. When we return from the signal handler, verify that the signal mask
-	is still empty, otherwise fail.
+ 3. When we return from the signal handler, verify that the signal mask 
+    is still empty, otherwise fail.
 
 */
 
@@ -25,23 +25,21 @@
 
 #define NUMSIGNALS 26
 
-int is_empty(sigset_t *set)
-{
+int is_empty(sigset_t *set) {
 
-	int i;
-	int siglist[] = {SIGABRT, SIGALRM, SIGBUS, SIGCHLD,
-					 SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT,
-					 SIGPIPE, SIGQUIT, SIGSEGV,
-					 SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU,
-					 SIGUSR1, SIGUSR2, SIGPROF, SIGSYS,
-					 SIGTRAP, SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ};
+        int i;
+        int siglist[] = {SIGABRT, SIGALRM, SIGBUS, SIGCHLD,
+                SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT,
+                SIGPIPE, SIGQUIT, SIGSEGV,
+                SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU,
+                SIGUSR1, SIGUSR2, SIGPROF, SIGSYS,
+                SIGTRAP, SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ };
 
-	for (i = 0; i < sizeof(siglist)/sizeof(siglist[0]); i++)
-	{
+        for (i=0; i<NUMSIGNALS; i++) {
 		if (sigismember(set, siglist[i]) != 0)
 			return 0;
-	}
-	return 1;
+        }
+        return 1;
 }
 
 void myhandler(int signo)
@@ -51,28 +49,22 @@ void myhandler(int signo)
 
 int main()
 {
-	struct sigaction act;
-	act.sa_handler = myhandler;
-	act.sa_flags = 0;
-	sigemptyset(&act.sa_mask);
-
 	sigset_t mask;
 	sigemptyset(&mask);
 
 	sigprocmask(SIG_SETMASK, &mask, NULL);
 
-	if (sigaction(SIGCHLD, &act, 0) != 0)
-	{
-		perror("Unexpected error while using sigaction()");
-		return PTS_UNRESOLVED;
-	}
+	if (sigset(SIGCHLD, myhandler) == SIG_ERR) {
+                perror("Unexpected error while using sigset()");
+               	return PTS_UNRESOLVED;
+        }
+
 	raise(SIGCHLD);
 	sigprocmask(SIG_SETMASK, NULL, &mask);
 
-	if (is_empty(&mask) != 1)
-	{
+	if (is_empty(&mask) != 1) {
 		printf("Test FAILED: signal mask should be empty\n");
 		return PTS_FAIL;
 	}
 	return PTS_PASS;
-}
+} 
