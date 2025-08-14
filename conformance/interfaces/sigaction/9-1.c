@@ -41,6 +41,11 @@ void handler(int signo, siginfo_t *info, void *context)
 
 int main()
 {
+	/* This test fails on Redox. */
+	printf("Test FAILED\n");
+	printf("https://gitlab.redox-os.org/redox-os/base/-/issues/44 \n");
+	return -1;
+	
 	pid_t pid;
 	struct sigaction act;
 	struct timeval tv;

@@ -114,6 +114,11 @@ void * threaded( void * arg )
 /* The main test function. */
 int main( int argc, char * argv[] )
 {
+	/* This test fails on Redox. */
+	printf("Test FAILED\n");
+	printf("https://gitlab.redox-os.org/redox-os/base/-/issues/46 \n");
+	return -1;
+	
 	int ret, i;
 	pthread_t ch[ NTHREADS ];
 
