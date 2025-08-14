@@ -45,10 +45,7 @@ int main()
 		sigaction(SIGTOTEST, &act, 0);
 
 		/* change child's process group id */
-		if (setpgid(0, 0) == -1) {
-			perror("Could not set process group");
-			return PTS_UNRESOLVED;
-		}
+		setpgrp();
 
 		sigpause(SIGABRT);
 
