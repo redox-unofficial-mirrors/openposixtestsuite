@@ -122,7 +122,7 @@ int main()
 	output_init();
 
 	/* Test the RTS extension */
-	rts = sysconf( _POSIX_REALTIME_SIGNALS );
+	rts = sysconf( _SC_REALTIME_SIGNALS );
 
 	if ( rts < 0L )
 	{

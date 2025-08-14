@@ -23,7 +23,7 @@ int main() {
 			SIGCONT, SIGFPE, SIGHUP, SIGILL, SIGINT,
                         SIGKILL, SIGPIPE, SIGQUIT, SIGSEGV, SIGSTOP,
                         SIGTERM, SIGTSTP, SIGTTIN, SIGTTOU, SIGUSR1,
-                        SIGUSR2, SIGPROF, SIGSYS, SIGTRAP,
+                        SIGUSR2, SIGPOLL, SIGPROF, SIGSYS, SIGTRAP,
                         SIGURG, SIGVTALRM, SIGXCPU, SIGXFSZ };
 
 	sigset_t signalset;

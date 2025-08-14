@@ -14,8 +14,8 @@
      handler has not been called. (A signal handler of the 
      prototype "void func(int signo);" will set the global
      variable to indicate otherwise. 
-  2. Use sigaction to setup a signal handler for SIGALRM
-  3. Raise SIGALRM.
+  2. Use sigaction to setup a signal handler for SIGPOLL
+  3. Raise SIGPOLL.
   4. Verify the global indicates the signal was called.
 */
 
@@ -37,13 +37,13 @@ int main()
 	act.sa_handler = handler;
 	act.sa_flags = 0;
 	sigemptyset(&act.sa_mask);
-	if (sigaction(SIGALRM,  &act, 0) == -1) {
+	if (sigaction(SIGPOLL,  &act, 0) == -1) {
 		perror("Unexpected error while attempting to setup test "
 		       "pre-conditions");
 		return PTS_UNRESOLVED;
 	}
 	
-	if (raise(SIGALRM) == -1) {
+	if (raise(SIGPOLL) == -1) {
 		perror("Unexpected error while attempting to setup test "
 		       "pre-conditions");
 		return PTS_UNRESOLVED;

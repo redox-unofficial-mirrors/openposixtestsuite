@@ -21,9 +21,9 @@
 * thread's signal mask during the handler execution.
 
 * The steps are:
-* -> register a signal handler for SIGALRM
-* -> raise SIGALRM
-* -> In handler, check for reentrance then raise SIGALRM again.
+* -> register a signal handler for SIGPOLL
+* -> raise SIGPOLL
+* -> In handler, check for reentrance then raise SIGPOLL again.
 
 * The test fails if signal handler if reentered or signal is not pending when raised again.
 */
@@ -76,7 +76,7 @@
 #define VERBOSE 1
 #endif
 
-#define SIGNAL SIGALRM
+#define SIGNAL SIGPOLL
 
 /******************************************************************************/
 /***************************    Test case   ***********************************/
@@ -103,7 +103,7 @@ void handler( int sig )
 
 		if ( ret != 0 )
 		{
-			UNRESOLVED( ret, "Failed to raise SIGALRM again" );
+			UNRESOLVED( ret, "Failed to raise SIGPOLL again" );
 		}
 
 		/* check the signal is pending */
@@ -147,7 +147,7 @@ int main()
 		UNRESOLVED( ret, "Failed to empty signal set" );
 	}
 
-	/* Install the signal handler for SIGALRM */
+	/* Install the signal handler for SIGPOLL */
 	ret = sigaction( SIGNAL, &sa, 0 );
 
 	if ( ret != 0 )
@@ -159,7 +159,7 @@ int main()
 
 	if ( ret != 0 )
 	{
-		UNRESOLVED( ret, "Failed to raise SIGALRM" );
+		UNRESOLVED( ret, "Failed to raise SIGPOLL" );
 	}
 
 	while ( called != 4 )

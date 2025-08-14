@@ -15,11 +15,11 @@
   Steps:
   1. Fork a new process
   2. (parent) wait for child
-  3. (child) Setup a signal handler for SIGALRM with SA_NODEFER set
+  3. (child) Setup a signal handler for SIGPOLL with SA_NODEFER set
      in the sa_flags field
-  4. (child) raise SIGALRM
+  4. (child) raise SIGPOLL
   5. (child, signal handler) increment handler count
-  6. (child, signal handler) if count is 1 then raise SIGALRM
+  6. (child, signal handler) if count is 1 then raise SIGPOLL
   7. (child, signal handler) if count is 1 then set error variable
   8. (child) if error is set then return -1, else return 0
   6. (parent - returning from wait) If child returned 0 then exit 0,
@@ -41,7 +41,7 @@ void handler(int signo)
 {
 	static int inside_handler = 0;
 
-	printf("SIGALRM caught\n");
+	printf("SIGPOLL caught\n");
 	if (inside_handler) {
 		printf("Signal caught while inside handler\n");
 		exit(0);
@@ -51,9 +51,9 @@ void handler(int signo)
 	handler_count++;
 
 	if (handler_count == 1) {
-		printf("Raising SIGALRM\n");
-		raise(SIGALRM);
-		printf("Returning from raising SIGALRM\n");
+		printf("Raising SIGPOLL\n");
+		raise(SIGPOLL);
+		printf("Returning from raising SIGPOLL\n");
 	}
 
 	inside_handler--;
@@ -69,13 +69,13 @@ int main()
 		act.sa_handler = handler;
 		act.sa_flags = SA_NODEFER;
 		sigemptyset(&act.sa_mask);
-		if (sigaction(SIGALRM,  &act, 0) == -1) {
+		if (sigaction(SIGPOLL,  &act, 0) == -1) {
 			perror("Unexpected error while attempting to "
 			       "setup test pre-conditions");
 			return PTS_UNRESOLVED;
 		}
 		
-		if (raise(SIGALRM) == -1) {
+		if (raise(SIGPOLL) == -1) {
 			perror("Unexpected error while attempting to "
 			       "setup test pre-conditions");
 			return PTS_UNRESOLVED;
